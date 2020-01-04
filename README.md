@@ -20,20 +20,20 @@ Un petit script python3 pour télécharger facilement une vidéo en replay depui
 - Nécessite d'avoir **Python 3** installé (pas de compilation disponible pour le moment)
 
 ## Installation
-Enregistrez le fichier [ArteDL.py](https://raw.githubusercontent.com/nicos99/ArteDownloader/master/ArteDL.py) sur votre ordinateur (via `CTRL +  S` une fois le script affiché).
+Enregistrez le fichier [ArteDL.py](https://raw.githubusercontent.com/nicos99/ArteDownloader/master/ArteDL.py) sur votre ordinateur (via *CTRL + S* une fois le script affiché).
 
 ## Usage
 Parant du principe que vous avez [*python*](https://www.python.org/downloads/) dans le $PATH :
 - Ouvrez une invite de commande à partir du dossier dans lequel vous voulez télécharger la vidéo :
-    - Sous Windows, ouvrez un explorateur (`Win + E`).
-    - Naviguez et vers le dossier voulu puis sélectionnner-le par `MAJ + bouton droit` et choisir *Ouvrir une fenêtre de commandes ici* ou *Ouvrir la fenêtre PowerShell ici* dans le menu contextuel.
+    - Sous Windows, ouvrez un explorateur (*Win + E*).
+    - Naviguez et vers le dossier voulu puis sélectionnner-le par *MAJ + bouton droit* et choisir *Ouvrir une fenêtre de commandes ici* ou *Ouvrir la fenêtre PowerShell ici* dans le menu contextuel.
 - Entrez `python `.
 - Effectuez un glisser-déposer dans la console de votre ficher 'ArteDL.py' enregistré en local.
 - Dans votre navigateur Internet affichez la page de la vidéo à télécharger.
 - Copiez le lien partageable à partir du bouton *"Partager"* présent en haut à droite de la vidéo.
     - ![copy_link1](doc-copy_link1.jpg)
     - ![copy_link2](doc-copy_link2.jpg)
-- Retourner dans l'invite de commande, ajoutez un espace puis collez le lien (par un `bouton droit`).
+- Retourner dans l'invite de commande, ajoutez un espace puis collez le lien (par un *bouton droit*).
 
 Voici ce que cela doit donner par exemple pour un dossier de travail `D:\temp` :  
 `D:\temp> python C:\Users\nicos\Downloads\ArteDL.py https://www.arte.tv/fr/videos/083285-001-A/athleticus/`  
