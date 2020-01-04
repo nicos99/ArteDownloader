@@ -4,13 +4,24 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-
         {
-            "name": "Python : Fichier actuel",
+            "name": "Python : Fichier actuel, petite vidéo ",
             "type": "python",
             "request": "launch",
             "program": "${file}",
-            "args": ["https://www.arte.tv/fr/videos/083285-001-A/athleticus/"],
+            "args": [
+                "https://www.arte.tv/fr/videos/083285-001-A/athleticus/"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python : Fichier actuel, grosse vidéo",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "args": [
+                "https://www.arte.tv/fr/videos/088456-001-A/concert-de-la-saint-sylvestre-2019/"
+            ],
             "console": "integratedTerminal"
         }
     ]
