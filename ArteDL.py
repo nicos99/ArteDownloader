@@ -21,7 +21,7 @@ import argparse
 JSON_BASE_URL = "https://api.arte.tv/api/player/v1/config/fr/"
 
 # flux recherché : HD en français
-STREAM = 'HTTPS_SQ_1' # mp4 SQ (1280x720) VO/VF
+DESIRED_STREAM = 'HTTPS_SQ_1' # mp4 SQ (1280x720) VO/VF
 
 
 # *** fonctions ***
@@ -55,6 +55,29 @@ print("> video id :", vidoId)
 rep = urllib.request.urlopen(JSON_BASE_URL + vidoId)
 videoInfos = json.load(rep)
 player = videoInfos['videoJsonPlayer']
+
+# gestion d'err (typiquement ID inconu)
+if 'customMsg' in player:
+    print("> FATAL ERR : config API return a message !")
+    print(player['customMsg'])
+    exit(1) # QUITTE SUR ERR
 title = player['VTI']
-subtitle = player['subtitle']
-print("> Title :", title, '-', subtitle)
+if 'subtitle' in player:
+    print("> Title :", title, '-', player['subtitle'])
+else:
+    print("> Title :", title)
+
+# recherche du flux désiré
+flux_replay = player['VSR']
+if len(flux_replay) == 0:
+    print("FATAL ERR : no video stream available !")
+    print("It's likely that this video has been removed (review times expired).")
+    exit(1) # QUITTE SUR ERR
+if DESIRED_STREAM not in flux_replay:
+    print("FATAL ERR : no stream '" + DESIRED_STREAM + "' found !")
+    print("Other streams available :")
+    for s in flux_replay:
+        print(s)
+    exit(1) # QUITTE SUR ERR
+stream = flux_replay[DESIRED_STREAM]
+print("> %s : %s %dx%d %dbps - %s" % (stream['id'], stream['mediaType'], stream['width'], stream['height'], stream['bitrate'], stream['versionLibelle']))
