@@ -38,6 +38,7 @@ def DLCallBack(block_number, block_size, total_size):
     global progress_start_time
 
     t = time.time()
+    # la première fois on y pase forcément, ensuite c'est toute les PERIODE_PRINT_S secondes
     if t > progress_old_time + PERIODE_PRINT_S:
         # cas particulier du début du téléchargement
         if block_number == 0:
@@ -45,7 +46,7 @@ def DLCallBack(block_number, block_size, total_size):
             print("> Downloading %4d MO" % (total_size / MEGA,))
         else:
             curr_size = block_number * block_size
-            rate = curr_size / (t - progress_start_time)
+            rate = curr_size / (t - progress_start_time) if t - progress_start_time > 0.1 else 0.0
             print("\r> Downloaded  %4d MO [%04.1f%%] at %.3f MO/s     "
                 % (curr_size / MEGA, curr_size * 100. / total_size, rate / MEGA),
                 end='')
