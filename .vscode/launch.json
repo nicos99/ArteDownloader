@@ -10,7 +10,7 @@
             "type": "python",
             "request": "launch",
             "program": "${file}",
-            "args": ["https://www.arte.tv/fr/videos/088456-001-A/concert-de-la-saint-sylvestre-2019"],
+            "args": ["https://www.arte.tv/fr/videos/083285-001-A/athleticus/"],
             "console": "integratedTerminal"
         }
     ]

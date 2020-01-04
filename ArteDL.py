@@ -18,10 +18,10 @@ import argparse
 # *** constantes ***
 
 # url de base pour récupérer la config json à parir de l'identifiant de la vidéo
-JSON_URL = "https://api.arte.tv/api/player/v1/config/fr/"
+JSON_BASE_URL = "https://api.arte.tv/api/player/v1/config/fr/"
 
 # flux recherché : HD en français
-STREAM = 'HTTPS_SQ_1' # mp4 SQ (1280x720) VF
+STREAM = 'HTTPS_SQ_1' # mp4 SQ (1280x720) VO/VF
 
 
 # *** fonctions ***
@@ -49,4 +49,12 @@ print("Get video info for '%s'..." % (args.shared_link,))
 # extraction de l'id de la vidéo à partir du lien de partage
 # ex: https://www.arte.tv/fr/videos/088456-001-A/concert-de-la-saint-sylvestre-2019/ --> 088456-001-A
 vidoId = args.shared_link.split('/')[5]
-print(vidoId)
+print("> video id :", vidoId)
+
+# récupération du fichier json de description de la viéo via l'API --> dico 'player'
+rep = urllib.request.urlopen(JSON_BASE_URL + vidoId)
+videoInfos = json.load(rep)
+player = videoInfos['videoJsonPlayer']
+title = player['VTI']
+subtitle = player['subtitle']
+print("> Title :", title, '-', subtitle)
