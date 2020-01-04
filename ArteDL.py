@@ -11,6 +11,7 @@
 
 # standard en Python 3
 import urllib.request
+import urllib.error
 import json
 import time
 import argparse
@@ -28,15 +29,24 @@ DESIRED_STREAM = 'HTTPS_SQ_1' # mp4 SQ (1280x720) VO/VF
 
 # call-back de téléchargement pour afficher la progression
 progress_old_time = 0.0
+progress_start_time = 0.0
 MEGA = 1024*1024
 PERIODE_PRINT_S = 2
 def DLCallBack(block_number, block_size, total_size):
     global progress_old_time
+    global progress_start_time
+
     t = time.time()
     if t > progress_old_time + PERIODE_PRINT_S:
-        curr_size = block_number * block_size
-        print(r"> Downloaded %4d MO / %d [%04.1f%%]" % (curr_size / MEGA, total_size / MEGA, curr_size * 100. / total_size))
-        progress_old_time = t
+        # cas particulier du début du téléchargement
+        if block_number == 0:
+            progress_start_time = t
+            print(r"> Downloading %4d MO" % (total_size / MEGA,))
+        else:
+            curr_size = block_number * block_size
+            rate = curr_size / (t - progress_start_time)
+            print(r"> Downloaded %4d MO / %d [%04.1f%%] at %.3f MO/s" % (curr_size / MEGA, total_size / MEGA, curr_size * 100. / total_size, rate / MEGA))
+            progress_old_time = t
 
 
 # *** MAIN ***
@@ -87,6 +97,10 @@ fileUrl = stream['url']
 opener = urllib.request.URLopener()
 opener.addheader('User-Agent', 'Mozilla/5.0') # contournement de l'err 403 reçu sur certain site
 print("Dowloading '%s' (from %s)..." % (fileName, fileUrl))
-res = opener.retrieve(fileUrl, fileName, DLCallBack)
-print("Completed ! :-)")
-opener.cleanup()
+try:
+    res = opener.retrieve(fileUrl, fileName, DLCallBack)
+    print("Completed ! :-)")
+except urllib.error.HTTPError as e:
+    print("ERROR :", e)
+finally:
+    opener.cleanup()
