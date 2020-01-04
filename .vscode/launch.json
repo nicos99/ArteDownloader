@@ -22,7 +22,7 @@
             "args": [
                 "https://www.arte.tv/fr/videos/088456-001-A/concert-de-la-saint-sylvestre-2019/"
             ],
-            "console": "integratedTerminal"
+            "console": "externalTerminal"
         }
     ]
 }

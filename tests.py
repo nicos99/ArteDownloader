@@ -1,7 +1,10 @@
 import urllib.request
 import json
 
-print("bonjour")
+print("bonjour", end='')
+print("\rla terre !")
+exit(0)
+
 json_url = "https://api.arte.tv/api/player/v1/config/fr/088456-001-A"
 #json_url = "https://api.arte.tv/api/player/v1/config/fr/083305-001-A"
 

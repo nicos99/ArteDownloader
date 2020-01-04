@@ -15,6 +15,7 @@ import urllib.error
 import json
 import time
 import argparse
+import os
 
 # *** constantes ***
 
@@ -41,11 +42,13 @@ def DLCallBack(block_number, block_size, total_size):
         # cas particulier du début du téléchargement
         if block_number == 0:
             progress_start_time = t
-            print(r"> Downloading %4d MO" % (total_size / MEGA,))
+            print("> Downloading %4d MO" % (total_size / MEGA,))
         else:
             curr_size = block_number * block_size
             rate = curr_size / (t - progress_start_time)
-            print(r"> Downloaded %4d MO / %d [%04.1f%%] at %.3f MO/s" % (curr_size / MEGA, total_size / MEGA, curr_size * 100. / total_size, rate / MEGA))
+            print("\r> Downloaded  %4d MO [%04.1f%%] at %.3f MO/s     "
+                % (curr_size / MEGA, curr_size * 100. / total_size, rate / MEGA),
+                end='')
             progress_old_time = t
 
 
@@ -99,8 +102,9 @@ opener.addheader('User-Agent', 'Mozilla/5.0') # contournement de l'err 403 reçu
 print("Dowloading '%s' (from %s)..." % (fileName, fileUrl))
 try:
     res = opener.retrieve(fileUrl, fileName, DLCallBack)
-    print("Completed ! :-)")
+    print("\nCompleted ! :-)")
+    print ("The file is here :", os.path.abspath(fileName))
 except urllib.error.HTTPError as e:
-    print("ERROR :", e)
+    print("\nERROR :", e)
 finally:
     opener.cleanup()
