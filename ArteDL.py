@@ -29,12 +29,13 @@ DESIRED_STREAM = 'HTTPS_SQ_1' # mp4 SQ (1280x720) VO/VF
 # call-back de téléchargement pour afficher la progression
 progress_old_time = 0.0
 MEGA = 1024*1024
+PERIODE_PRINT_S = 2
 def DLCallBack(block_number, block_size, total_size):
     global progress_old_time
     t = time.time()
-    if t > progress_old_time + 1:
+    if t > progress_old_time + PERIODE_PRINT_S:
         curr_size = block_number * block_size
-        print(r"Downloading: %4d MO / %d [%04.1f%%]" % (curr_size / MEGA, total_size / MEGA, curr_size * 100. / total_size))
+        print(r"> Downloaded %4d MO / %d [%04.1f%%]" % (curr_size / MEGA, total_size / MEGA, curr_size * 100. / total_size))
         progress_old_time = t
 
 
@@ -62,10 +63,8 @@ if 'customMsg' in player:
     print(player['customMsg'])
     exit(1) # QUITTE SUR ERR
 title = player['VTI']
-if 'subtitle' in player:
-    print("> Title :", title, '-', player['subtitle'])
-else:
-    print("> Title :", title)
+fullTitle = title + " - " + player['subtitle'] if 'subtitle' in player else title
+print("> Full Title :", fullTitle)
 
 # recherche du flux désiré
 flux_replay = player['VSR']
@@ -81,3 +80,13 @@ if DESIRED_STREAM not in flux_replay:
     exit(1) # QUITTE SUR ERR
 stream = flux_replay[DESIRED_STREAM]
 print("> %s : %s %dx%d %dbps - %s" % (stream['id'], stream['mediaType'], stream['width'], stream['height'], stream['bitrate'], stream['versionLibelle']))
+
+# téléchargement
+fileName = fullTitle + '.' + stream['mediaType']
+fileUrl = stream['url']
+opener = urllib.request.URLopener()
+opener.addheader('User-Agent', 'Mozilla/5.0') # contournement de l'err 403 reçu sur certain site
+print("Dowloading '%s' (from %s)..." % (fileName, fileUrl))
+res = opener.retrieve(fileUrl, fileName, DLCallBack)
+print("Completed ! :-)")
+opener.cleanup()
