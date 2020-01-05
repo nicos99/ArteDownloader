@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 #
 # Auteur : Nicolas COURTILLER
+#
+# version 1.1
+#   L'argument 'shared_link' est à présent optionel. Si absent on le prompte.
 # version 1.0
 #    Téléchargement simple (via 'urllib.request') dans le dossier courant
 #    avec le nom de la vidéo (champ 'VTI').
-# Usage : ArteDL.py <URL de partage de la vidéo>
+#
+# Usage : ArteDL.py [<URL de partage de la vidéo>]
+#   'ArteDL.py --help' pour d'avantage d'information.
 
 
 # *** librairies utilisées ***
@@ -56,10 +61,12 @@ def DLCallBack(block_number, block_size, total_size):
 # *** MAIN ***
 
 # gestion de la ligne de commande
-parser = argparse.ArgumentParser("ArteDL.py")
-parser.add_argument("shared_link", help = "The URL get from the 'share' button of the video", type = str)
+parser = argparse.ArgumentParser(description="download easily a replay video from Arte website")
+parser.add_argument("shared_link", nargs='?', help="The URL get from the 'share' button of the video. Prompt if not set")
 args = parser.parse_args()
-print("Get video info for '%s'..." % (args.shared_link,))
+if args.shared_link is None:
+    args.shared_link = input("shared_link ? : ")
+print("Get video info for '" + args.shared_link + "'...")
 
 # extraction de l'id de la vidéo à partir du lien de partage
 # ex: https://www.arte.tv/fr/videos/088456-001-A/concert-de-la-saint-sylvestre-2019/ --> 088456-001-A
