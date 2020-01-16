@@ -1,9 +1,9 @@
 # ArteDownloader
 ## *Purpose (English)*
-A short python3 script to download easily a replay video from Arte website
+A short python3 script to download easily a replay video from Arte website (ARTE +7)
 
 ## Objectif
-Un petit script python3 pour télécharger facilement une vidéo en replay depuis le site Web d'Arte
+Un petit script python3 pour télécharger facilement une vidéo en replay depuis le site Web d'Arte (ARTE +7)
 
 ## *Limitations (English)*
 - For the moment, download only the **hight quality french version** of the video (SQ_1).
@@ -19,26 +19,37 @@ Un petit script python3 pour télécharger facilement une vidéo en replay depui
      - Par exemple, j'ai remarqué que si le réseau est perdu pendant trop longtemps, le téléchargement peut stagner éternellement.
 - Nécessite d'avoir **Python 3** installé (pas de compilation disponible pour le moment)
 
-## Installation
-Enregistrez le fichier [ArteDL.py](https://raw.githubusercontent.com/nicos99/ArteDownloader/master/ArteDL.py) sur votre ordinateur (via *CTRL + S* une fois le script affiché).
+## Installation (Windows)
+Parant du principe que vous avez [*python*](https://www.python.org/downloads/) dans le $PATH :
+- Enregistrez le fichier [ArteDL.py](https://raw.githubusercontent.com/nicos99/ArteDownloader/master/ArteDL.py) sur votre ordinateur (via *CTRL + S* une fois le script affiché) dans un dossier dédié comme '*D:\\ArteDL*'.
+- Créez un raccourci sur votre bureau :
+    - *bouton droit* > *Nouveau* > *Raccourci*,
+    - entrez `python` dans le champs "*Entrez l'emplacement de l'élément :*" puis cliquez sur "*Suivant*",
+    - entrer `Arte downloader` dans le champs "*Entrez un nom pour ce raccourci :*" puis cliquez sur "*Terminer*".
+- Editez le raccourcis via *bouton droit* dessus > *Propriété* pour le lier au script :
+    - allez au bout du champs "*cible*", ajouter un espace, `-i`, un autre espace suivi du chemin complet sur le script python (entre guillements si le chemin comporte des espaces).
+        - Ex de cible : `C:\Users\(...)\Python36-32\python.exe -i D:\ArteDL\ArteDL.py`
+    - remplacer le champs "*Démarrer dans :*" par le dossier dans lequel vous voulez trouver la vidéo.
+        - Ex1 : `D:\ArteDL`
+	- Ex2 : `%userprofile%\Downloads`
+    - valider par "*OK*"
 
 ## Usage
-Parant du principe que vous avez [*python*](https://www.python.org/downloads/) dans le $PATH :
-- Ouvrez une invite de commande à partir du dossier dans lequel vous voulez télécharger la vidéo :
-    - Sous Windows, ouvrez un explorateur (*Win + E*).
-    - Naviguez et vers le dossier voulu puis sélectionnner-le par *MAJ + bouton droit* et choisir *Ouvrir une fenêtre de commandes ici* ou *Ouvrir la fenêtre PowerShell ici* dans le menu contextuel.
-- Entrez `python `.
-- Effectuez un glisser-déposer dans la console de votre ficher 'ArteDL.py' enregistré en local.
+### Principe
+Il faut exécuter le script en fournissant l'URL de partage de la vidéo, ou en la collant lorsque le scrit la demmande.
+`ArteDL.py [<URL de partage de la vidéo>]`
+La vidéo est alors téléchargée dans le dossier courant.
+### Via le raccourcis Windows
 - Dans votre navigateur Internet affichez la page de la vidéo à télécharger.
 - Copiez le lien partageable à partir du bouton *"Partager"* présent en haut à droite de la vidéo.
     - ![copy_link1](doc-copy_link1.jpg)
     - ![copy_link2](doc-copy_link2.jpg)
-- Retourner dans l'invite de commande, ajoutez un espace puis collez le lien (par un *bouton droit*).
+- Double-cliquez sur le raccourci créé sur votre bureau à l'étape précédente.
+- Collez le lien demandé par le script (par un *bouton droit*) et valider par \[*Entrer*\] !.
 
 Voici ce que cela doit donner par exemple pour un dossier de travail `D:\temp` :  
 `D:\temp> python C:\Users\nicos\Downloads\ArteDL.py https://www.arte.tv/fr/videos/083285-001-A/athleticus/`  
-Il ne reste plus qu'à valider par \[*Entrer*\] !
-
+(TODO)
 	Get video info for 'https://www.arte.tv/fr/videos/083285-001-A/athleticus/'...
 	> video id : 083285-001-A
 	> Full Title : Athleticus - Saut à ski
@@ -50,10 +61,12 @@ Il ne reste plus qu'à valider par \[*Entrer*\] !
 	The file is here : D:\temp\Athleticus - Saut à ski.mp4
 
 # Remarques
-Ce mini projet amateur est plus une occasion de pratiquer Python 3 qu'une volonter de suplanter un outil existant. Vous pouvez vous tourner vers l'extention "*Video DownloadHelper*" de FireFox par exemple pour un outils professionel (bien que pour Arte la vidéo que j'obtiens en utilisant cette extention comporte étrangement un framerate à 24,97 fps au lieu de 25.0, ce qui entraine des sacades à la visualisation, bug peut-être corriger depuis...).
+Ce mini projet amateur est plus une occasion de pratiquer Python 3 qu'une volonter de suplanter un outil existant. Vous pouvez vous tourner vers l'extention "*Video DownloadHelper*" de FireFox par exemple pour un outils plus complet (\*). Il existe également sur GitHub d'autres projets similaires ou qui ont le même objectif.
 
 Bien que les risques soient limités, je décline toute responsabilité en cas de disfonctionnement.
 
 N'ésitez pas à revenir vers moi pour toute remarque, bug, suggestion, remerciment, encouragement, etc.
 
 Nicolas.
+
+(\*) : bien que pour Arte la vidéo que j'obtiens en utilisant cette extention comporte étrangement un framerate à 24,97 fps au lieu de 25.0, ce qui entraine des sacades à la visualisation, bug peut-être corriger depuis...
