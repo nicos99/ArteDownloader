@@ -31,7 +31,7 @@ Parant du principe que vous avez [*python*](https://www.python.org/downloads/) d
         - Ex de cible : `C:\Users\(...)\Python36-32\python.exe -i D:\ArteDL\ArteDL.py`
     - remplacer le champs "*Démarrer dans :*" par le dossier dans lequel vous voulez trouver la vidéo.
         - Ex1 : `D:\ArteDL`
-	- Ex2 : `%userprofile%\Downloads`
+        - Ex2 : `%userprofile%\Downloads`
     - valider par "*OK*"
 
 ## Usage
@@ -39,26 +39,27 @@ Parant du principe que vous avez [*python*](https://www.python.org/downloads/) d
 Il faut exécuter le script en fournissant l'URL de partage de la vidéo, ou en la collant lorsque le scrit la demmande.
 `ArteDL.py [<URL de partage de la vidéo>]`
 La vidéo est alors téléchargée dans le dossier courant.
-### Via le raccourcis Windows
+### Via le raccourci Windows
 - Dans votre navigateur Internet affichez la page de la vidéo à télécharger.
 - Copiez le lien partageable à partir du bouton *"Partager"* présent en haut à droite de la vidéo.
     - ![copy_link1](doc-copy_link1.jpg)
     - ![copy_link2](doc-copy_link2.jpg)
-- Double-cliquez sur le raccourci créé sur votre bureau à l'étape précédente.
+- Double-cliquez sur le raccourci créé sur votre bureau à l'étape d'installation.
 - Collez le lien demandé par le script (par un *bouton droit*) et valider par \[*Entrer*\] !.
 
-Voici ce que cela doit donner par exemple pour un dossier de travail `D:\temp` :  
-`D:\temp> python C:\Users\nicos\Downloads\ArteDL.py https://www.arte.tv/fr/videos/083285-001-A/athleticus/`  
-(TODO)
+Voici ce que cela doit donner par exemple pour un dossier de travail `%userprofile%\Downloads` :  
+
+	shared_link ? : https://www.arte.tv/fr/videos/083285-001-A/athleticus/
 	Get video info for 'https://www.arte.tv/fr/videos/083285-001-A/athleticus/'...
 	> video id : 083285-001-A
 	> Full Title : Athleticus - Saut à ski
 	> HTTPS_SQ_1 : mp4 1280x720 2200bps - Version originale
 	Dowloading 'Athleticus - Saut à ski.mp4' (from https://arteptweb-a.akamaihd.net/am/ptweb/083000/083200/083285-001-A_SQ_0_VO_04377569_MP4-2200_AMM-PTWEB_1AeJFgNEtb.mp4)...
 	> Downloading   39 MO
-	> Downloaded    22 MO [55.5%] at 10.854 MO/s
+	> Downloaded    37 MO [95.0%] at 18.833 MO/s
 	Completed ! :-)
-	The file is here : D:\temp\Athleticus - Saut à ski.mp4
+	The file is here : C:\Users\nicos\Downloads\Athleticus - Saut à ski.mp4
+	>>>
 
 # Remarques
 Ce mini projet amateur est plus une occasion de pratiquer Python 3 qu'une volonter de suplanter un outil existant. Vous pouvez vous tourner vers l'extention "*Video DownloadHelper*" de FireFox par exemple pour un outils plus complet (\*). Il existe également sur GitHub d'autres projets similaires ou qui ont le même objectif.
