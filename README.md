@@ -25,14 +25,14 @@ Parant du principe que vous avez [*python*](https://www.python.org/downloads/) d
 - Créez un raccourci sur votre bureau :
     - *bouton droit* > *Nouveau* > *Raccourci*,
     - entrez `python` dans le champs "*Entrez l'emplacement de l'élément :*" puis cliquez sur "*Suivant*",
-    - entrer `Arte downloader` dans le champs "*Entrez un nom pour ce raccourci :*" puis cliquez sur "*Terminer*".
-- Editez le raccourcis via *bouton droit* dessus > *Propriété* pour le lier au script :
+    - dans le champs "*Entrez un nom pour ce raccourci :*" mettre par exemple `Arte downloader` puis cliquez sur "*Terminer*".
+- Editez le raccourci via *bouton droit* dessus > *Propriété* pour le lier au script :
     - allez au bout du champs "*cible*", ajouter un espace, `-i`, un autre espace suivi du chemin complet sur le script python (entre guillements si le chemin comporte des espaces).
         - Ex de cible : `C:\Users\(...)\Python36-32\python.exe -i D:\ArteDL\ArteDL.py`
     - remplacer le champs "*Démarrer dans :*" par le dossier dans lequel vous voulez trouver la vidéo.
         - Ex1 : `D:\ArteDL`
         - Ex2 : `%userprofile%\Downloads`
-    - valider par "*OK*"
+    - validez par "*OK*".
 
 ## Usage
 ### Principe
