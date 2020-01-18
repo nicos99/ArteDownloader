@@ -104,6 +104,9 @@ print("> %s : %s %dx%d %dbps - %s" % (stream['id'], stream['mediaType'], stream[
 
 # téléchargement
 fileName = fullTitle + '.' + stream['mediaType']
+for c in ['\\', '/', '*', '?', '<', '>', '|']:
+    if c in fileName:
+        fileName = fileName.replace(c, '_')
 fileUrl = stream['url']
 opener = urllib.request.URLopener()
 opener.addheader('User-Agent', 'Mozilla/5.0') # contournement de l'err 403 reçu sur certain site
