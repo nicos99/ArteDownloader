@@ -27,8 +27,11 @@ import os
 # url de base pour récupérer la config json à parir de l'identifiant de la vidéo
 JSON_BASE_URL = "https://api.arte.tv/api/player/v1/config/fr/"
 
-# flux recherché : HD en français
-DESIRED_STREAM = 'HTTPS_SQ_1' # mp4 SQ (1280x720) VO/VF
+# flux recherchés, par ordre de priorité : HD en VO-STF ou VF-STF
+DESIRED_STREAMS = (
+    'HTTPS_SQ_2', # mp4 SQ (1280x720) Version originale - ST français
+    'HTTPS_SQ_1' # mp4 SQ (1280x720) Français
+    )
 
 
 # *** fonctions ***
@@ -93,13 +96,18 @@ if len(flux_replay) == 0:
     print("FATAL ERR : no video stream available !")
     print("It's likely that this video has been removed (review times expired).")
     exit(1) # QUITTE SUR ERR
-if DESIRED_STREAM not in flux_replay:
-    print("FATAL ERR : no stream '" + DESIRED_STREAM + "' found !")
+codeFlux = ''
+for code in DESIRED_STREAMS:
+    if code in flux_replay:
+        codeFlux = code
+        break
+if codeFlux == '':
+    print("FATAL ERR : no streams ", DESIRED_STREAMS, "found !")
     print("Other streams available :")
     for s in flux_replay:
         print(s)
     exit(1) # QUITTE SUR ERR
-stream = flux_replay[DESIRED_STREAM]
+stream = flux_replay[codeFlux]
 print("> %s : %s %dx%d %dbps - %s" % (stream['id'], stream['mediaType'], stream['width'], stream['height'], stream['bitrate'], stream['versionLibelle']))
 
 # téléchargement
