@@ -30,7 +30,7 @@ JSON_BASE_URL = "https://api.arte.tv/api/player/v1/config/fr/"
 # flux recherchés, par ordre de priorité : HD en VO ou VF
 DESIRED_QUALITY = 'SQ'      # 1280x720
 DESIRED1_VERCODE = 'VO-STF' # Version originale - ST français
-DESIRED2_VERCODES = ('VOF', 'VF-STF') # Français
+DESIRED2_VERCODES = ('VOF', 'VF-STF', 'VOF-STF') # Français
 
 
 # *** fonctions ***
