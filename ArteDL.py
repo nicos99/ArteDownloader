@@ -114,7 +114,7 @@ print("> %s : %s %dx%d %dbps - %s" % (stream['id'], stream['mediaType'], stream[
 
 # téléchargement
 fileName = fullTitle + '.' + stream['mediaType']
-for c in ['\\', '/', ':', '*', '?', '<', '>', '|']:
+for c in ['\\', '/', ':', '*', '?', '"', '<', '>', '|']:
     if c in fileName:
         fileName = fileName.replace(c, '_')
 fileUrl = stream['url']
