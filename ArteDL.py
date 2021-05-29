@@ -59,73 +59,79 @@ def DLCallBack(block_number, block_size, total_size):
                 end='')
             progress_old_time = t
 
+# fonction principale
+def main():
+
+    # gestion de la ligne de commande
+    parser = argparse.ArgumentParser(description="download easily a replay video from Arte website")
+    parser.add_argument("shared_link", nargs='?', help="The URL get from the 'share' button of the video. Prompt if not set")
+    args = parser.parse_args()
+    if args.shared_link is None:
+        args.shared_link = input("shared_link ? : ")
+    print("Get video info for '" + args.shared_link + "'...")
+
+    # extraction de l'id de la vidéo à partir du lien de partage
+    # ex: https://www.arte.tv/fr/videos/088456-001-A/concert-de-la-saint-sylvestre-2019/ --> 088456-001-A
+    vidoId = args.shared_link.split('/')[5]
+    print("> video id :", vidoId)
+
+    # récupération du fichier json de description de la viéo via l'API --> dico 'player'
+    rep = urllib.request.urlopen(JSON_BASE_URL + vidoId)
+    videoInfos = json.load(rep)
+    player = videoInfos['videoJsonPlayer']
+
+    # gestion d'err (typiquement ID inconu)
+    if 'customMsg' in player:
+        print("> FATAL ERR : config API return a message !")
+        print(player['customMsg'])
+        exit(1) # QUITTE SUR ERR
+    title = player['VTI']
+    fullTitle = title + " - " + player['subtitle'] if 'subtitle' in player else title
+    print("> Full Title :", fullTitle)
+
+    # recherche du flux désiré
+    flux_replay = player['VSR']
+    if len(flux_replay) == 0:
+        print("FATAL ERR : no video stream available !")
+        print("It's likely that this video has been removed (review times expired).")
+        exit(1) # QUITTE SUR ERR
+    codeFlux = ''
+    for s in flux_replay:
+        if flux_replay[s]['quality'] == DESIRED_QUALITY:
+            if flux_replay[s]['versionCode'] == DESIRED1_VERCODE:
+                codeFlux = s
+                break # on a trouvé le meilleur, pas le peine de continuer à chercher
+            elif flux_replay[s]['versionCode'] in DESIRED2_VERCODES:
+                codeFlux = s
+    if codeFlux == '':
+        print("FATAL ERR : no streams", DESIRED_QUALITY, "in", DESIRED1_VERCODE, "or", DESIRED2_VERCODES, "found !")
+        print("Other streams available :")
+        for s in flux_replay:
+            print(s)
+        exit(1) # QUITTE SUR ERR
+    stream = flux_replay[codeFlux]
+    print("> %s : %s %dx%d %dbps - %s" % (stream['id'], stream['mediaType'], stream['width'], stream['height'], stream['bitrate'], stream['versionLibelle']))
+
+    # téléchargement
+    fileName = fullTitle + '.' + stream['mediaType']
+    for c in ['\\', '/', ':', '*', '?', '"', '<', '>', '|']:
+        if c in fileName:
+            fileName = fileName.replace(c, '_')
+    fileUrl = stream['url']
+    opener = urllib.request.URLopener()
+    opener.addheader('User-Agent', 'Mozilla/5.0') # contournement de l'err 403 reçu sur certain site
+    print("Dowloading '%s' (from %s)..." % (fileName, fileUrl))
+    try:
+        res = opener.retrieve(fileUrl, fileName, DLCallBack)
+        print("\nCompleted ! :-)")
+        print ("The file is here :", os.path.abspath(fileName))
+    except urllib.error.HTTPError as e:
+        print("\nERROR :", e)
+    finally:
+        opener.cleanup()
+
 
 # *** MAIN ***
 
-# gestion de la ligne de commande
-parser = argparse.ArgumentParser(description="download easily a replay video from Arte website")
-parser.add_argument("shared_link", nargs='?', help="The URL get from the 'share' button of the video. Prompt if not set")
-args = parser.parse_args()
-if args.shared_link is None:
-    args.shared_link = input("shared_link ? : ")
-print("Get video info for '" + args.shared_link + "'...")
-
-# extraction de l'id de la vidéo à partir du lien de partage
-# ex: https://www.arte.tv/fr/videos/088456-001-A/concert-de-la-saint-sylvestre-2019/ --> 088456-001-A
-vidoId = args.shared_link.split('/')[5]
-print("> video id :", vidoId)
-
-# récupération du fichier json de description de la viéo via l'API --> dico 'player'
-rep = urllib.request.urlopen(JSON_BASE_URL + vidoId)
-videoInfos = json.load(rep)
-player = videoInfos['videoJsonPlayer']
-
-# gestion d'err (typiquement ID inconu)
-if 'customMsg' in player:
-    print("> FATAL ERR : config API return a message !")
-    print(player['customMsg'])
-    exit(1) # QUITTE SUR ERR
-title = player['VTI']
-fullTitle = title + " - " + player['subtitle'] if 'subtitle' in player else title
-print("> Full Title :", fullTitle)
-
-# recherche du flux désiré
-flux_replay = player['VSR']
-if len(flux_replay) == 0:
-    print("FATAL ERR : no video stream available !")
-    print("It's likely that this video has been removed (review times expired).")
-    exit(1) # QUITTE SUR ERR
-codeFlux = ''
-for s in flux_replay:
-    if flux_replay[s]['quality'] == DESIRED_QUALITY:
-        if flux_replay[s]['versionCode'] == DESIRED1_VERCODE:
-            codeFlux = s
-            break # on a trouvé le meilleur, pas le peine de continuer à chercher
-        elif flux_replay[s]['versionCode'] in DESIRED2_VERCODES:
-            codeFlux = s
-if codeFlux == '':
-    print("FATAL ERR : no streams", DESIRED_QUALITY, "in", DESIRED1_VERCODE, "or", DESIRED2_VERCODES, "found !")
-    print("Other streams available :")
-    for s in flux_replay:
-        print(s)
-    exit(1) # QUITTE SUR ERR
-stream = flux_replay[codeFlux]
-print("> %s : %s %dx%d %dbps - %s" % (stream['id'], stream['mediaType'], stream['width'], stream['height'], stream['bitrate'], stream['versionLibelle']))
-
-# téléchargement
-fileName = fullTitle + '.' + stream['mediaType']
-for c in ['\\', '/', ':', '*', '?', '"', '<', '>', '|']:
-    if c in fileName:
-        fileName = fileName.replace(c, '_')
-fileUrl = stream['url']
-opener = urllib.request.URLopener()
-opener.addheader('User-Agent', 'Mozilla/5.0') # contournement de l'err 403 reçu sur certain site
-print("Dowloading '%s' (from %s)..." % (fileName, fileUrl))
-try:
-    res = opener.retrieve(fileUrl, fileName, DLCallBack)
-    print("\nCompleted ! :-)")
-    print ("The file is here :", os.path.abspath(fileName))
-except urllib.error.HTTPError as e:
-    print("\nERROR :", e)
-finally:
-    opener.cleanup()
+main()
+print("([i] type `main()` to download an other file)")
